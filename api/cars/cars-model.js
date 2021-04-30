@@ -1,3 +1,5 @@
+//config
+
 const getAll = () => {
   // DO YOUR MAGIC
 }

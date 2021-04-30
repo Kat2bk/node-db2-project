@@ -6,7 +6,7 @@ server.use(express.json())
 //router, middleware
 
 server.get('/', (req, res) => {
-    res.send('Welcome to the API')
+    res.send('Welcome to the API!')
 })
 
 module.exports = server
