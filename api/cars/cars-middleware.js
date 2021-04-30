@@ -28,7 +28,7 @@ const checkCarPayload = (req, res, next) => {
     res.status(400).json({message: "make of car is missing"})
   } else if (!req.body.model) {
     res.status(400).json({message: "model of car is missing"})
-  } else if (!req.body.mileage) {
+  } else if (!req.body.mileage || req.body.mileage < 0) {
     res.status(400).json({message: "mileage is missing"})
   } else {
     next()
@@ -47,13 +47,23 @@ const checkVinNumberValid = (req, res, next) => {
 }
 
 const checkVinNumberUnique = (req, res, next) => {
-  const vin = req.body.vin;
-
+  db.getVin(req.body.vin)
+  .then(vin => {
+    if (vin) {
+     return res.status(400).json({message: `vin ${req.body.vin} already exists`})
+    } else {
+     next()
+    }
+  })
+  .catch(error => {
+    next(error)
+  })
 
 }
 
 module.exports = {
   checkCarId,
   checkCarPayload,
-  checkVinNumberValid
+  checkVinNumberValid,
+  checkVinNumberUnique
 }

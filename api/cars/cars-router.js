@@ -1,5 +1,5 @@
 const express = require('express');
-const {checkCarId, checkCarPayload, checkVinNumberValid} = require('./cars-middleware');
+const {checkCarId, checkCarPayload, checkVinNumberValid, checkVinNumberUnique} = require('./cars-middleware');
 const db = require('./cars-model');
 
 const router = express.Router();
@@ -23,7 +23,7 @@ router.get('/:id', checkCarId, async (req, res, next) => {
 })
 
 
-router.post('/', checkCarPayload, checkVinNumberValid, async (req, res, next) => {
+router.post('/', checkCarPayload, checkVinNumberValid, checkVinNumberUnique, async (req, res, next) => {
     const car = {
         "vin": req.body.vin,
         "make": req.body.make,
