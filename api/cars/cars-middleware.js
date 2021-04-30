@@ -5,19 +5,23 @@ const checkCarId = (req, res, next) => {
 
   db.getById(id)
   .then(car => {
-    if (!car) {
+    if (car) {
+    req.car = car
+      next()
+    } else if (car == null || car == undefined) {
       res.status(404).json({
         message: `the car with id ${id} is not found`
       })
-    } else {
-      next()
     }
+  })
+  .catch(error => {
+    next(error)
   })
 
 }
 
 const checkCarPayload = (req, res, next) => {
-  // DO YOUR MAGIC
+  
 }
 
 const checkVinNumberValid = (req, res, next) => {
