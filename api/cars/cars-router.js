@@ -1,5 +1,5 @@
 const express = require('express');
-const {checkCarId} = require('./cars-middleware');
+const {checkCarId, checkCarPayload} = require('./cars-middleware');
 const db = require('./cars-model');
 
 const router = express.Router();
@@ -23,7 +23,7 @@ router.get('/:id', checkCarId, async (req, res, next) => {
 })
 
 
-router.post('/', async (req, res, next) => {
+router.post('/', checkCarPayload, async (req, res, next) => {
     const car = {
         "vin": req.body.vin,
         "make": req.body.make,
@@ -34,7 +34,7 @@ router.post('/', async (req, res, next) => {
     }
 
     try {
-        const newCar = await db.create(req.body)
+        const newCar = await db.create(car)
         res.status(201).json(newCar)
     } catch (error) {
         next(error)

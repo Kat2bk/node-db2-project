@@ -21,7 +21,17 @@ const checkCarId = (req, res, next) => {
 }
 
 const checkCarPayload = (req, res, next) => {
-  
+  if (!req.body.vin) {
+    res.status(400).json({ message: "vin number is missing"})
+  } else if (!req.body.make) {
+    res.status(400).json({message: "make of car is missing"})
+  } else if (!req.body.model) {
+    res.status(400).json({message: "model of car is missing"})
+  } else if (!req.body.mileage) {
+    res.status(400).json({message: "mileage is missing"})
+  } else {
+    next()
+  }
 }
 
 const checkVinNumberValid = (req, res, next) => {
@@ -33,5 +43,6 @@ const checkVinNumberUnique = (req, res, next) => {
 }
 
 module.exports = {
-  checkCarId
+  checkCarId,
+  checkCarPayload
 }
